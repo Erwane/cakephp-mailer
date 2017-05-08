@@ -13,7 +13,7 @@
     "minimum-stability": "dev",
     "require": {
         "phpmailer/phpmailer": "~5.0",
-        "cakephp/cakephp": "~3.0"
+        "cakephp/cakephp": "~3.4"
     },
     "require-dev": {
         "cakephp/debug_kit": "~3.2",

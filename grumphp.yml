@@ -6,7 +6,6 @@ parameters:
         succeeded: ~
     tasks:
         phplint: ~
-        phpunit: ~
         phpcs:
             standard: CakePHP
             encoding: UTF-8

@@ -5,9 +5,10 @@ use Cake\Mailer\Email as CakeEmail;
 use CakePhpMailer\Mailer\Email;
 
 $config = [
-    'EmailTransport' => ['default' => Configure::read('EmailTransport')],
-    'Email' => ['default' => Configure::read('Email')],
+    'EmailTransport' => Configure::read('EmailTransport'),
+    'Email' => Configure::read('Email'),
 ];
+
 if (empty($config['Email']['default'])) {
     $config = [
         'EmailTransport' => ['default' => CakeEmail::getConfigTransport('default')],

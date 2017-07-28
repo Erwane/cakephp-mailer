@@ -4,6 +4,7 @@ namespace CakePhpMailer\Mailer;
 use Cake\Core\StaticConfigTrait;
 use Cake\View\ViewVarsTrait;
 use PHPMailer;
+use InvalidArgumentException;
 
 class Email extends PHPMailer
 {
@@ -11,11 +12,28 @@ class Email extends PHPMailer
     use ViewVarsTrait;
 
     /**
+     * display or not email
+     * @var boolean
+     */
+    private $_debug = false;
+
+    /**
      * Configuration profiles for transports.
      *
      * @var array
      */
     protected static $_transportConfig = [];
+
+    /**
+     * An array mapping url schemes to fully qualified Transport class names
+     *
+     * @var array
+     */
+    protected static $_dsnClassMap = [
+        'debug' => 'Cake\Mailer\Transport\DebugTransport',
+        'mail' => 'Cake\Mailer\Transport\MailTransport',
+        'smtp' => 'Cake\Mailer\Transport\SmtpTransport',
+    ];
 
     /**
      * Sets transport configuration.
@@ -74,7 +92,8 @@ class Email extends PHPMailer
         parent::__construct();
 
         $key = 'default';
-        if (static::$_transportConfig[$key]['scheme'] === 'smtp') {
+
+        if (!empty(static::$_transportConfig[$key]['scheme']) && static::$_transportConfig[$key]['scheme'] === 'smtp') {
             $this->Mailer = static::$_transportConfig[$key]['scheme'];
             $this->Host = static::$_transportConfig[$key]['host'];
             $this->Port = static::$_transportConfig[$key]['port'];
@@ -87,6 +106,13 @@ class Email extends PHPMailer
         $this->Sender = static::$_config[$key]['sender'];
 
         $this->emailFormat(static::$_config[$key]['emailFormat']);
+    }
+
+    public function setDebug($value)
+    {
+        $this->_debug = (bool)$value;
+
+        return $this;
     }
 
     /**
@@ -197,6 +223,12 @@ class Email extends PHPMailer
      */
     public function send()
     {
+
+        if ($this->_debug) {
+            echo $this->Body;
+            exit(1);
+        }
+
         // change recipients if testing
         if (!empty($this->Testing)) {
             $this->ClearCustomHeaders();
@@ -212,15 +244,5 @@ class Email extends PHPMailer
         }
 
         return parent::send();
-    }
-
-    /**
-     * echo the email Body and exit.
-     * @return void
-     */
-    public function debug()
-    {
-        echo $this->Body;
-        exit;
     }
 }

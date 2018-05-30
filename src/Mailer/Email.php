@@ -142,6 +142,19 @@ class Email extends PHPMailer
     }
 
     /**
+     * reply to
+     * @param  string $email sender email
+     * @param  string $name  sender name
+     * @return self
+     */
+    public function replyTo($email, $name = '')
+    {
+        parent::addReplyTo($email, $name);
+
+        return $this;
+    }
+
+    /**
      * subject
      * @param  string $subject subject email
      * @return self

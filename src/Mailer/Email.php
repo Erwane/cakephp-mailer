@@ -3,7 +3,7 @@ namespace CakePhpMailer\Mailer;
 
 use Cake\Core\StaticConfigTrait;
 use Cake\View\ViewVarsTrait;
-use PHPMailer;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class Email extends PHPMailer
 {
